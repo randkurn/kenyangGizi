@@ -79,7 +79,7 @@ kenyangGizi/
 
 
 ### Lampiran
-## Foto Tampilan Awal
+### Foto Tampilan Awal
 <p align="center">
   <img src="https://github.com/user-attachments/assets/519327f0-2515-46d5-a13e-c6d7a08e96d6/foto.png" alt="Tampilan Awal" width="500">
 </p>
