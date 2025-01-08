@@ -53,43 +53,54 @@ float hitungTargetKalori(float tdee, int tujuanProgram) {
 }
 
 void tampilkanRekomendasi(struct DataKesehatan data, int tujuanProgram) {
-    printf("\n=== Hasil Analisis Kesehatan ===\n");
-    printf("BMI: %.2f\n", data.bmi);
+    printf("\n============================================\n");
+    printf("           HASIL ANALISIS KESEHATAN          \n");
+    printf("============================================\n\n");
     
-    // Interpretasi BMI
+    printf("INDEKS MASSA TUBUH (BMI)\n");
+    printf("------------------------\n");
+    printf("Nilai BMI     : %.2f\n", data.bmi);
+    
+    printf("Kategori      : ");
     if(data.bmi < 18.5) {
-        printf("Kategori: Berat Badan Kurang\n");
+        printf("Berat Badan Kurang\n");
     } else if(data.bmi < 25) {
-        printf("Kategori: Berat Badan Normal\n");
+        printf("Berat Badan Normal\n");
     } else if(data.bmi < 30) {
-        printf("Kategori: Berat Badan Berlebih\n");
+        printf("Berat Badan Berlebih\n");
     } else {
-        printf("Kategori: Obesitas\n");
+        printf("Obesitas\n");
     }
     
-    printf("\nBMR: %.2f kalori\n", data.bmr);
-    printf("TDEE: %.2f kalori\n", data.tdee);
-    printf("\nRekomendasi Kalori Harian: %.2f kalori\n", data.targetKalori);
+    printf("\nKEBUTUHAN ENERGI\n");
+    printf("------------------------\n");
+    printf("BMR          : %.2f kalori\n", data.bmr);
+    printf("TDEE         : %.2f kalori\n", data.tdee);
+    printf("Target Kalori: %.2f kalori\n", data.targetKalori);
     
-    // Rekomendasi berdasarkan tujuan
-    printf("\nRekomendasi Program:\n");
+    printf("\nREKOMENDASI PROGRAM\n");
+    printf("------------------------\n");
     switch(tujuanProgram) {
         case 1:
-            printf("- Target defisit kalori: 500 kalori per hari\n");
-            printf("- Potensi penurunan berat badan: 0.5-1 kg per minggu\n");
-            printf("- Fokus pada makanan tinggi protein dan serat\n");
+            printf("Program Penurunan Berat Badan:\n");
+            printf("✓ Target defisit    : 500 kalori/hari\n");
+            printf("✓ Potensi penurunan : 0.5-1 kg/minggu\n");
+            printf("✓ Fokus nutrisi     : Protein dan serat tinggi\n");
             break;
         case 2:
-            printf("- Target surplus kalori: 500 kalori per hari\n");
-            printf("- Potensi kenaikan berat badan: 0.5-1 kg per minggu\n");
-            printf("- Fokus pada makanan tinggi protein dan karbohidrat kompleks\n");
+            printf("Program Penambahan Berat Badan:\n");
+            printf("✓ Target surplus    : 500 kalori/hari\n");
+            printf("✓ Potensi kenaikan  : 0.5-1 kg/minggu\n");
+            printf("✓ Fokus nutrisi     : Protein dan karbohidrat kompleks\n");
             break;
         case 3:
-            printf("- Fokus pada keseimbangan nutrisi\n");
-            printf("- Utamakan makanan segar dan bervariasi\n");
-            printf("- Jaga pola makan teratur\n");
+            printf("Program Pola Hidup Sehat:\n");
+            printf("✓ Keseimbangan nutrisi\n");
+            printf("✓ Konsumsi makanan segar dan bervariasi\n");
+            printf("✓ Pola makan teratur\n");
             break;
     }
+    printf("\n============================================\n");
 }
 #endif
 

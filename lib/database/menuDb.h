@@ -30,8 +30,24 @@ float hitungKalori(float protein, float karbohidrat, float lemak) {
 struct MenuItem* bacaMenuDariCSV(int* jumlahMenu) {
     FILE *fp = fopen("menu.csv", "r");
     if (fp == NULL) {
-        printf("Error: Tidak dapat membuka file menu.csv\n");
-        return NULL;
+        // Buat file baru jika belum ada
+        fp = fopen("menu.csv", "w");
+        if (fp == NULL) {
+            printf("Error: Tidak dapat membuat file menu.csv\n");
+            return NULL;
+        }
+        // Tulis header untuk file baru
+        fprintf(fp, "ID;Nama Menu;Harga;Kategori;Tersedia;Protein (g);Karbohidrat (g);Lemak (g)\n");
+        fclose(fp);
+        
+        // Alokasi memori untuk array kosong
+        struct MenuItem* daftarMenu = (struct MenuItem*)malloc(MAX_MENU_ITEMS * sizeof(struct MenuItem));
+        if (daftarMenu == NULL) {
+            printf("Error: Gagal mengalokasikan memori\n");
+            return NULL;
+        }
+        *jumlahMenu = 0;
+        return daftarMenu;
     }
 
     struct MenuItem* daftarMenu = (struct MenuItem*)malloc(MAX_MENU_ITEMS * sizeof(struct MenuItem));

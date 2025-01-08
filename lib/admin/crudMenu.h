@@ -29,16 +29,17 @@ void lihatSemuaMenu(void) {
         return;
     }
     
-    printf("\n%s=== DAFTAR MENU ===%s\n", BOLD_CYAN, RESET);
-    printf("%s%-5s %-30s %-10s %-15s %-10s %-10s %-10s %-10s %-10s%s\n", 
+    printf("\n%s+------------------- DAFTAR MENU -------------------+%s\n", BOLD_CYAN, RESET);
+    printf("%s| %-5s %-30s %-10s %-15s %-10s %-10s %-10s %-10s %-10s |%s\n", 
            BOLD_WHITE,
            "ID", "Nama", "Harga", "Kategori", "Tersedia", "Protein", "Karbo", "Lemak", "Kalori",
            RESET);
-    printf("%s================================================================================%s\n",
+    printf("%s+---------------------------------------------------------------------------------------------------------------------+%s\n",
            BOLD_WHITE, RESET);
     
     for (int i = 0; i < jumlahMenu; i++) {
-        printf("%-5d %-30s %s%-10.2f%s %-15s %s%-10d%s %-10.2f %-10.2f %-10.2f %-10.2f\n",
+        printf("%s|%s %-5d %-30s %s%-10.2f%s %-15s %s%-10d%s %-10.2f %-10.2f %-10.2f %-10.2f %s|%s\n",
+               BOLD_WHITE, RESET,
                daftarMenu[i].id,
                daftarMenu[i].nama,
                CYAN,
@@ -51,8 +52,11 @@ void lihatSemuaMenu(void) {
                daftarMenu[i].protein,
                daftarMenu[i].karbohidrat,
                daftarMenu[i].lemak,
-               daftarMenu[i].kalori);
+               daftarMenu[i].kalori,
+               BOLD_WHITE, RESET);
     }
+    printf("%s+---------------------------------------------------------------------------------------------------------------------+%s\n",
+           BOLD_WHITE, RESET);
     
     free(daftarMenu);
 }
@@ -73,16 +77,23 @@ void tambahMenu(void) {
     }
     
     struct MenuItem menuBaru;
-    menuBaru.id = jumlahMenu + 1; // ID otomatis
+    menuBaru.id = jumlahMenu + 1;
     
-    printf("\n%s=== TAMBAH MENU BARU ===%s\n", BOLD_CYAN, RESET);
-    printf("%sNama menu:%s ", BOLD_WHITE, RESET);
-    scanf(" %49[^\n]", menuBaru.nama);
+    do {
+        printf("\n%s=== TAMBAH MENU BARU ===%s\n", BOLD_CYAN, RESET);
+        printf("%sNama menu (maksimal 30 karakter):%s ", BOLD_WHITE, RESET);
+        scanf(" %49[^\n]", menuBaru.nama);
+        
+        if (strlen(menuBaru.nama) > 30) {
+            printf("%sError: Nama menu tidak boleh lebih dari 30 karakter!%s\n", BOLD_RED, RESET);
+            printf("Silakan masukkan nama menu yang lebih pendek.\n");
+        }
+    } while (strlen(menuBaru.nama) > 30);
     
     printf("Harga: ");
     scanf("%f", &menuBaru.harga);
     
-    printf("Kategori: ");
+    printf("Kategori (Bulking, Diet, Sehat): ");
     scanf(" %49[^\n]", menuBaru.kategori);
     
     menuBaru.tersedia = 1; // Default tersedia
@@ -114,6 +125,35 @@ void editMenu(void) {
         printf("Error: Gagal membaca data menu\n");
         return;
     }
+    
+    printf("\n%s+------------------- DAFTAR MENU -------------------+%s\n", BOLD_CYAN, RESET);
+    printf("%s| %-5s %-30s %-10s %-15s %-10s %-10s %-10s %-10s %-10s |%s\n", 
+           BOLD_WHITE,
+           "ID", "Nama", "Harga", "Kategori", "Tersedia", "Protein", "Karbo", "Lemak", "Kalori",
+           RESET);
+    printf("%s+---------------------------------------------------------------------------------------------------------------------+%s\n",
+           BOLD_WHITE, RESET);
+    
+    for (int i = 0; i < jumlahMenu; i++) {
+        printf("%s|%s %-5d %-30s %s%-10.2f%s %-15s %s%-10d%s %-10.2f %-10.2f %-10.2f %-10.2f %s|%s\n",
+               BOLD_WHITE, RESET,
+               daftarMenu[i].id,
+               daftarMenu[i].nama,
+               CYAN,
+               daftarMenu[i].harga,
+               RESET,
+               daftarMenu[i].kategori,
+               daftarMenu[i].tersedia ? GREEN : RED,
+               daftarMenu[i].tersedia,
+               RESET,
+               daftarMenu[i].protein,
+               daftarMenu[i].karbohidrat,
+               daftarMenu[i].lemak,
+               daftarMenu[i].kalori,
+               BOLD_WHITE, RESET);
+    }
+    printf("%s+---------------------------------------------------------------------------------------------------------------------+%s\n",
+           BOLD_WHITE, RESET);
     
     int idMenu;
     printf("\n%sMasukkan ID menu yang akan diedit:%s ", BOLD_WHITE, RESET);

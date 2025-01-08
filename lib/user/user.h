@@ -650,4 +650,87 @@ void simpanPelangganCSV(const struct Pelanggan *p) {
     fclose(fp);
 }
 
+// Fungsi helper untuk memotong string
+void truncateString(char* str, int maxLength) {
+    if (strlen(str) > maxLength) {
+        str[maxLength-3] = '.';
+        str[maxLength-2] = '.';
+        str[maxLength-1] = '.';
+        str[maxLength] = '\0';
+    }
+}
+
+// Fungsi untuk menampilkan data dengan format kolom yang rapi
+void displayFormattedData(const char* data, int width) {
+    char tempStr[256];
+    strncpy(tempStr, data, sizeof(tempStr) - 1);
+    tempStr[sizeof(tempStr) - 1] = '\0';
+    
+    truncateString(tempStr, width);
+    printf("%-*s", width, tempStr);
+}
+
+// Modifikasi fungsi yang menampilkan data untuk menggunakan displayFormattedData
+void tampilkanData() {
+    // Definisikan lebar kolom
+    const int USERNAME_WIDTH = 15;
+    const int NAMA_WIDTH = 20;
+    const int TELEPON_WIDTH = 15;
+    const int BERAT_WIDTH = 10;
+    const int TINGGI_WIDTH = 10;
+    const int USIA_WIDTH = 6;
+    const int JK_WIDTH = 5;
+    
+    printf("+-%-*s-+-%-*s-+-%-*s-+-%-*s-+-%-*s-+-%-*s-+-%-*s-+\n",
+           USERNAME_WIDTH, "---------------",
+           NAMA_WIDTH, "--------------------",
+           TELEPON_WIDTH, "---------------",
+           BERAT_WIDTH, "----------",
+           TINGGI_WIDTH, "----------",
+           USIA_WIDTH, "------",
+           JK_WIDTH, "-----");
+           
+    printf("| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |\n",
+           USERNAME_WIDTH, "Username",
+           NAMA_WIDTH, "Nama",
+           TELEPON_WIDTH, "Telepon",
+           BERAT_WIDTH, "Berat",
+           TINGGI_WIDTH, "Tinggi",
+           USIA_WIDTH, "Usia",
+           JK_WIDTH, "JK");
+    
+    // Baca dan tampilkan data dari CSV
+    FILE *fp = fopen("pelanggan.csv", "r");
+    if (fp != NULL) {
+        char line[1024];
+        char *token;
+        
+        // Skip header
+        fgets(line, sizeof(line), fp);
+        
+        while (fgets(line, sizeof(line), fp)) {
+            printf("| ");
+            token = strtok(line, ";");
+            int col = 0;
+            
+            while (token != NULL && col < 7) {
+                switch(col) {
+                    case 0: displayFormattedData(token, USERNAME_WIDTH); break;
+                    case 2: displayFormattedData(token, NAMA_WIDTH); break;
+                    case 3: displayFormattedData(token, TELEPON_WIDTH); break;
+                    case 4: displayFormattedData(token, BERAT_WIDTH); break;
+                    case 5: displayFormattedData(token, TINGGI_WIDTH); break;
+                    case 6: displayFormattedData(token, USIA_WIDTH); break;
+                    case 7: displayFormattedData(token, JK_WIDTH); break;
+                }
+                printf(" | ");
+                token = strtok(NULL, ";");
+                col++;
+            }
+            printf("\n");
+        }
+        fclose(fp);
+    }
+}
+
 #endif
