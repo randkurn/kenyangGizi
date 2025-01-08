@@ -148,17 +148,16 @@ void lihatMenuMakanan() {
         }
 
         printf("\n=================== DAFTAR MENU ===================\n");
-        printf("------------------------------------------------------------\n");
-        printf("%-5s %-30s %-13s %-10s\n", "ID", "Nama", "Harga", "Kalori");
-        printf("------------------------------------------------------------\n");
+        printf(BOLD_CYAN "+----+--------------------------------+---------------+-------------+\n");
+        printf("| ID |             Nama Menu          |    Harga     |   Kalori    |\n");
+        printf("+----+--------------------------------+---------------+-------------+\n" RESET);
         
         int menuDitemukan = 0;
         for(int i = 0; i < jumlahMenu; i++) {
-            // Hapus pengecekan kategori dan ubah logika pencarian
             if(daftarMenu[i].tersedia && 
                (opsi != 2 || strstr(strlwr(daftarMenu[i].nama), strlwr(cariNama)) != NULL)) {
                 
-                printf(WHITE "%-5d%-30sRp %-12.2f%-10.2f kal\n" RESET,
+                printf(WHITE "| %-2d | %-30s | Rp.%-9.2f | %-10.2f |\n",
                     daftarMenu[i].id, 
                     daftarMenu[i].nama, 
                     daftarMenu[i].harga, 
@@ -166,6 +165,7 @@ void lihatMenuMakanan() {
                 menuDitemukan = 1;
             }
         }
+        printf(BOLD_CYAN "+----+--------------------------------+---------------+-------------+\n" RESET);
 
         if(!menuDitemukan) {
             printf(BOLD_RED "\nTidak ada menu yang tersedia.\n" RESET);
@@ -181,16 +181,79 @@ void lihatMenuMakanan() {
 
 void buatPesanan(const char* username) {
     system("cls");
-    int jumlahMenu;
+    int jumlahMenu, jumlahPelanggan;
     struct MenuItem* daftarMenu = bacaMenuDariCSV(&jumlahMenu);
+    struct Pelanggan* daftarPelanggan = bacaPelangganDariCSV(&jumlahPelanggan);
+    struct DataKesehatan data;
     int pilihan, jumlah;
     
-    if (daftarMenu == NULL) {
-        printf("\nError: Tidak dapat membaca data menu!\n");
+    if (daftarMenu == NULL || daftarPelanggan == NULL) {
+        printf(BOLD_RED "\nError: Tidak dapat membaca data!\n" RESET);
         return;
     }
+
+    // Cari data pelanggan dan hitung rekomendasi kalori
+    int tujuanProgram = 0;
+    for(int i = 0; i < jumlahPelanggan; i++) {
+        if(strcmp(daftarPelanggan[i].username, username) == 0) {
+            data.bmr = hitungBMR(daftarPelanggan[i].beratBadan, daftarPelanggan[i].tinggiBadan, 
+                                daftarPelanggan[i].usia, daftarPelanggan[i].jenisKelamin);
+            data.tdee = hitungTDEE(data.bmr, 
+                daftarPelanggan[i].tingkatAktivitas,
+                daftarPelanggan[i].nilaiPolaHidup);
+            data.targetKalori = hitungTargetKalori(data.tdee, daftarPelanggan[i].tujuanProgram);
+            tujuanProgram = daftarPelanggan[i].tujuanProgram;
+            break;
+        }
+    }
+
+    // Tampilkan menu dengan rekomendasi
+    printf("\n=================== MENU MAKANAN ===================\n");
+    printf("Target Kalori Harian Anda: %.2f kal\n", data.targetKalori);
+    if(tujuanProgram == 2) { // Bulking
+        printf("Program: Bulking (Penambahan Massa Otot)\n");
+    } else if(tujuanProgram == 1) { // Cutting
+        printf("Program: Cutting (Penurunan Berat Badan)\n");
+    } else { // Maintenance
+        printf("Program: Maintenance (Menjaga Berat Badan)\n");
+    }
+    printf("------------------------------------------------------------\n");
+    printf("%-5s %-30s %-13s %-10s %s\n", "ID", "Nama", "Harga", "Kalori", "Rekomendasi");
+    printf("------------------------------------------------------------\n");
     
-    printf("\nMasukkan ID Menu yang ingin dipesan: ");
+    for(int i = 0; i < jumlahMenu; i++) {
+        if(daftarMenu[i].tersedia) {
+            char rekomendasi[50] = "";
+            
+            // Kriteria rekomendasi berdasarkan tujuan program
+            if(tujuanProgram == 2) { // Bulking
+                // Rekomendasi menu dengan kalori dan protein tinggi
+                if(daftarMenu[i].kalori >= data.targetKalori/3) {
+                    strcpy(rekomendasi, BOLD_GREEN "[RECOMMENDED]" RESET);
+                }
+            } else if(tujuanProgram == 1) { // Cutting
+                // Rekomendasi menu dengan kalori rendah tapi protein cukup
+                if(daftarMenu[i].kalori <= data.targetKalori/4) {
+                    strcpy(rekomendasi, BOLD_GREEN "[RECOMMENDED]" RESET);
+                }
+            } else { // Maintenance
+                // Rekomendasi menu dengan kalori seimbang
+                if(daftarMenu[i].kalori <= data.targetKalori/3) {
+                    strcpy(rekomendasi, BOLD_GREEN "[RECOMMENDED]" RESET);
+                }
+            }
+            
+            printf("%-5d%-30sRp %-12.2f%-10.2f %s\n",
+                daftarMenu[i].id, 
+                daftarMenu[i].nama, 
+                daftarMenu[i].harga, 
+                daftarMenu[i].kalori,
+                rekomendasi);
+        }
+    }
+    printf("\n" BOLD_YELLOW "Note:  = Menu yang sesuai dengan target kalori Anda" RESET);
+    
+    printf("\n\nMasukkan ID Menu yang ingin dipesan: ");
     scanf("%d", &pilihan);
     printf("Jumlah pesanan: ");
     scanf("%d", &jumlah);
@@ -198,6 +261,7 @@ void buatPesanan(const char* username) {
     konfirmasiPesanan(username, pilihan, jumlah);
     
     free(daftarMenu);
+    free(daftarPelanggan);
 }
 
 void lihatRiwayatPesanan(const char* username) {
@@ -213,18 +277,16 @@ void lihatRiwayatPesanan(const char* username) {
     
     do {
         printf("\n=================== RIWAYAT PESANAN ===================\n");
-        printf("--------------------------------------------------------\n");
-        printf("%-5s %-10s %-8s %-10s %-10s %-15s\n", 
-               "ID", "Menu", "Jumlah", "Total", "Status", "Tanggal");
-        printf("--------------------------------------------------------\n");
+        printf(BOLD_CYAN "+----+------------+--------+------------+------------+----------------+\n");
+        printf("| ID |  ID Menu  | Jumlah |   Total    |   Status   |    Tanggal     |\n");
+        printf("+----+------------+--------+------------+------------+----------------+\n" RESET);
         
         for(int i = 0; i < jumlahPesanan; i++) {
             if(strcmp(daftarPesanan[i].username, username) == 0) {
-                // Warna berbeda untuk status berbeda
                 char* statusColor = strcmp(daftarPesanan[i].status, "Selesai") == 0 ? BOLD_GREEN :
                                   strcmp(daftarPesanan[i].status, "Pending") == 0 ? BOLD_YELLOW : WHITE;
                 
-                printf(WHITE "%-5d %-10d %-8d " YELLOW "Rp.%-8.2f %s%-10s" WHITE " %-15s\n" RESET,
+                printf(WHITE "| %-2d | %-10d | %-6d | Rp.%-7.2f | %s%-10s" WHITE " | %-14s |\n" RESET,
                        daftarPesanan[i].idPesanan, 
                        daftarPesanan[i].idMenu,
                        daftarPesanan[i].jumlah, 
@@ -234,6 +296,8 @@ void lihatRiwayatPesanan(const char* username) {
                        daftarPesanan[i].tanggalPesan);
             }
         }
+        printf(BOLD_CYAN "+----+------------+--------+------------+------------+----------------+\n" RESET);
+
         printf("\n======================================================\n");
         
         printf(BOLD_YELLOW "\nKembali ke menu awal? (Y/N): " RESET);
