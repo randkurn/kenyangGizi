@@ -28,7 +28,7 @@ float hitungKalori(float protein, float karbohidrat, float lemak) {
 }
 
 struct MenuItem* bacaMenuDariCSV(int* jumlahMenu) {
-    FILE *fp = fopen("database/menu.csv", "r");
+    FILE *fp = fopen("menu.csv", "r");
     if (fp == NULL) {
         printf("Error: Tidak dapat membuka file menu.csv\n");
         return NULL;
@@ -105,7 +105,7 @@ struct MenuItem* bacaMenuDariCSV(int* jumlahMenu) {
 }
 // Fungsi untuk menulis menu ke CSV
 void tulisMenuKeCSV(struct MenuItem* daftarMenu, int jumlahMenu) {
-    FILE *fp = fopen("database/menu.csv", "w");
+    FILE *fp = fopen("menu.csv", "w");
     if (fp == NULL) {
         printf("Error: Tidak dapat membuka file menu.csv\n");
         return;

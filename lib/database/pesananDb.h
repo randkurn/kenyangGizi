@@ -10,7 +10,7 @@ bool tambahPesanan(struct Order pesanan);
 #ifdef IMPLEMENT_MENU_DB
 
 struct Order* bacaPesananDariCSV(int* jumlahPesanan) {
-    FILE *fp = fopen("database/pesanan.csv", "r");
+    FILE *fp = fopen("pesanan.csv", "r");
     if (fp == NULL) {
         printf("Error: Tidak dapat membuka file pesanan.csv\n");
         return NULL;
@@ -62,7 +62,7 @@ struct Order* bacaPesananDariCSV(int* jumlahPesanan) {
 
 // Fungsi untuk menulis pesanan ke CSV
 void tulisPesananKeCSV(struct Order* daftarPesanan, int jumlahPesanan) {
-    FILE *fp = fopen("database/pesanan.csv", "w");
+    FILE *fp = fopen("pesanan.csv", "w");
     if (fp == NULL) {
         printf("Error: Tidak dapat membuka file pesanan.csv\n");
         return;
@@ -88,7 +88,7 @@ void tulisPesananKeCSV(struct Order* daftarPesanan, int jumlahPesanan) {
 
 bool tambahPesanan(struct Order pesanan) {
     int lastId = 0;
-    FILE *readFile = fopen("database/pesanan.csv", "r");
+    FILE *readFile = fopen("pesanan.csv", "r");
     
     if (readFile != NULL) {
         char line[1024];
@@ -109,10 +109,10 @@ bool tambahPesanan(struct Order pesanan) {
     // Set ID baru = ID terakhir + 1
     pesanan.idPesanan = lastId + 1;
 
-    FILE *file = fopen("database/pesanan.csv", "a");
+    FILE *file = fopen("pesanan.csv", "a");
     if (file == NULL) {
         system("mkdir data 2> nul");
-        file = fopen("database/pesanan.csv", "a");
+        file = fopen("pesanan.csv", "a");
         if (file == NULL) {
             printf("Error: Tidak dapat membuat file pesanan.csv\n");
             return false;

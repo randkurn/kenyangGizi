@@ -50,7 +50,7 @@ int surveyPolaHidup(int isAfterRegister, float existingWeight, float existingHei
 
     // Pertanyaan 1
     printSeparator();
-    printf(BOLD "| %-30s |" RESET "\n", "1. Berapa kali Anda berolahraga?");
+    printf(BOLD "| %-30s |" RESET "\n", "1. Berapa kali Anda berolahraga dalam seminggu?");
     printSeparator();
     printf(CYAN "| A. Tidak pernah              |\n");
     printf("| B. 1-2 kali                  |\n");
@@ -568,7 +568,7 @@ int registerPelanggan(void) {
 
 // Fungsi untuk validasi login pelanggan
 int validasiPelangganCSV(const char* username, const char* password) {
-    FILE *fp = fopen("database/pelanggan.csv", "r");
+    FILE *fp = fopen("pelanggan.csv", "r");
     if(fp == NULL) return 0;
     
     char line[1024];
@@ -598,7 +598,7 @@ int validasiPelangganCSV(const char* username, const char* password) {
 
 // Fungsi untuk mengecek username yang sudah ada
 int isUsernameExists(const char* username) {
-    FILE *fp = fopen("database/pelanggan.csv", "r");
+    FILE *fp = fopen("pelanggan.csv", "r");
     if(fp == NULL) return 0;
     
     char line[1024];
@@ -622,7 +622,7 @@ int isUsernameExists(const char* username) {
 
 // Fungsi untuk menyimpan data pelanggan ke CSV
 void simpanPelangganCSV(const struct Pelanggan *p) {
-    FILE *fp = fopen("database/pelanggan.csv", "a");
+    FILE *fp = fopen("pelanggan.csv", "a");
     if(fp == NULL) {
         printf("Error: Tidak dapat membuka file!\n");
         return;

@@ -13,7 +13,7 @@ void lihatProfilPelanggan(const char* username);
 #ifdef IMPLEMENT_PELANGGAN
 // Semua implementasi fungsi taruh di sini
 struct Pelanggan* bacaPelangganDariCSV(int* jumlahPelanggan) {
-    FILE *fp = fopen("database/pelanggan.csv", "r");
+    FILE *fp = fopen("pelanggan.csv", "r");
     if (fp == NULL) {
         printf("Error: Tidak dapat membuka file pelanggan.csv\n");
         return NULL;
@@ -63,7 +63,7 @@ struct Pelanggan* bacaPelangganDariCSV(int* jumlahPelanggan) {
 }
 
 void tulisPelangganKeCSV(struct Pelanggan* daftarPelanggan, int jumlahPelanggan) {
-    FILE *fp = fopen("database/pelanggan.csv", "w");
+    FILE *fp = fopen("pelanggan.csv", "w");
     if (fp == NULL) {
         printf("Error: Tidak dapat membuka file pelanggan.csv\n");
         return;
