@@ -1,15 +1,15 @@
 ID;Nama Menu;Harga;Kategori;Tersedia;Protein (g);Karbohidrat (g);Lemak (g)
-1;Ayam Panggang + Nasi Merah + Brokoli;25000.00;Bulking;1;26.00;45.00;14.00
-2;Ayam Filet + Kentang + Wortel;19000.00;Bulking;1;31.00;37.00;13.00
+1;Ayam panggang, nasi, brokoli.;25000.00;Bulking;1;26.00;45.00;14.00
+2;Ayam filet, kentang, wortel.;19000.00;Bulking;1;31.00;37.00;13.00
 3;Salmon ikan mentah ;35000.00;Bulking;1;22.00;39.00;10.00
-4;Daging Sapi Panggang + Buncis + Ubi;30000.00;Bulking;1;28.00;40.00;6.00
+4;Sapi panggang, buncis, ubi.;30000.00;Bulking;1;28.00;40.00;6.00
 5;Tahu bang mamat Tumis;15000.00;Bulking;1;20.00;42.00;13.00
 6;Ayam Panggang dengan Brokoli;18500.00;Diet;1;35.00;7.00;3.00
 7;Telur Rebus dan Oatmeal;14000.00;Diet;1;15.00;30.00;10.00
-8;Ikan Tuna Panggang dan Ubi Rebus;23000.00;Diet;1;30.00;20.00;2.00
+8;Tuna panggang, ubi rebus.;23000.00;Diet;1;30.00;20.00;2.00
 9;Dada Ayam dan Salad Sayur;14500.00;Diet;1;25.00;8.00;10.00
-10;Nasi Merah dengan Ayam Panggang dan Sayur Bayam;16000.00;Sehat;1;30.00;35.00;3.00
-11;Sup Ikan Kakap dengan Wortel dan Kentang;25000.00;Sehat;1;25.00;25.00;2.00
+10;Nasi merah, ayam panggang, bayam.;16000.00;Sehat;1;30.00;35.00;3.00
+11;Sup kakap, wortel, kentang.;25000.00;Sehat;1;25.00;25.00;2.00
 12;Tempe Bacem dan Gado-Gado;11000.00;Sehat;1;15.00;20.00;8.00
 13;Salad Buah;19000.00;Sehat;1;5.00;20.00;2.00
 14;Bubur Oatmeal dengan Pisang;10000.00;Sehat;1;6.00;35.00;2.00
@@ -20,7 +20,7 @@ ID;Nama Menu;Harga;Kategori;Tersedia;Protein (g);Karbohidrat (g);Lemak (g)
 20;Omlet Tuna Keju;40000.00;Bulking;1;30.00;5.00;15.00
 21;Pasta Daging Kacang Polong;27000.00;Bulking;1;28.00;45.00;12.00
 22;Sup Ayam Brokoli;35000.00;Cutting;1;25.00;8.00;5.00
-23;Tahu Tempe Sambal Tomat;15000.00;Cutting;1;20.00;12.00;10.00
+23;Tahu, tempe, sambal tomat.;15000.00;Cutting;1;20.00;12.00;10.00
 24;Jus Hijau Detoks;11000.00;Cutting;1;2.00;15.00;0.00
 25;Wrap Sayur Ayam;20000.00;Cutting;1;30.00;25.00;8.00
 26;Ayam Kukus Lemon;27000.00;Diet;1;30.00;5.00;5.00
