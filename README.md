@@ -28,6 +28,7 @@ Solusi inovatif yang dirancang untuk membantu masyarakat perkotaan yang sibuk da
   - Statistik menu
 
 ## Struktur Proyek
+```
 kenyangGizi/
 ├── lib/
 │ ├── admin/
@@ -53,6 +54,7 @@ kenyangGizi/
 │ ├── pelanggan.csv
 │ └── pesanan.csv
 └── main.c
+```
 
 
 
