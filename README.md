@@ -76,3 +76,7 @@ kenyangGizi/
 2. Penambahan komentar pada fungsi-fungsi utama
 3. Optimalisasi penggunaan memori
 4. Peningkatan keamanan validasi input
+
+
+![image](https://github.com/user-attachments/assets/519327f0-2515-46d5-a13e-c6d7a08e96d6)
+
