@@ -49,10 +49,10 @@ kenyangGizi/
 │ ├── auth.h
 │ ├── colors.h
 │ └── struct.h
-├── database/
-│ ├── menu.csv
-│ ├── pelanggan.csv
-│ └── pesanan.csv
+├── main.exe
+│── menu.csv
+│── pelanggan.csv
+│── pesanan.csv
 └── main.c
 ```
 
@@ -76,11 +76,4 @@ kenyangGizi/
 2. Penambahan komentar pada fungsi-fungsi utama
 3. Optimalisasi penggunaan memori
 4. Peningkatan keamanan validasi input
-
-
-### Lampiran
-### Foto Tampilan Awal
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/519327f0-2515-46d5-a13e-c6d7a08e96d6/foto.png" alt="Tampilan Awal" width="500">
-</p>
 
