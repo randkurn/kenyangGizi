@@ -199,6 +199,8 @@ void editMenu(void) {
                                            daftarMenu[index].karbohidrat, 
                                            daftarMenu[index].lemak);
     
+    daftarMenu[index].id = idMenu;
+    
     tulisMenuKeCSV(daftarMenu, jumlahMenu);
     free(daftarMenu);
     printf("\n%sMenu berhasil diupdate!%s\n", BOLD_GREEN, RESET);
@@ -234,7 +236,6 @@ void hapusMenu(void) {
     // Geser semua menu setelah index yang dihapus
     for (int i = index; i < jumlahMenu - 1; i++) {
         daftarMenu[i] = daftarMenu[i + 1];
-        daftarMenu[i].id = i + 1; // Update ID
     }
     
     jumlahMenu--;

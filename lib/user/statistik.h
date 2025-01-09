@@ -18,7 +18,7 @@ float hitungBMI(float beratBadan, float tinggiBadan) {
 }
 
 float hitungBMR(float beratBadan, float tinggiBadan, int usia, char jenisKelamin) {
-    if(jenisKelamin == 'P') {
+    if(jenisKelamin == 'L') {
         return 66.5 + (13.75 * beratBadan) + (5.003 * tinggiBadan) - (6.75 * usia);
     } else {
         return 655.1 + (9.563 * beratBadan) + (1.850 * tinggiBadan) - (4.676 * usia);
@@ -83,21 +83,21 @@ void tampilkanRekomendasi(struct DataKesehatan data, int tujuanProgram) {
     switch(tujuanProgram) {
         case 1:
             printf("Program Penurunan Berat Badan:\n");
-            printf("✓ Target defisit    : 500 kalori/hari\n");
-            printf("✓ Potensi penurunan : 0.5-1 kg/minggu\n");
-            printf("✓ Fokus nutrisi     : Protein dan serat tinggi\n");
+            printf(" Target defisit    : 500 kalori/hari\n");
+            printf(" Potensi penurunan : 0.5-1 kg/minggu\n");
+            printf(" Fokus nutrisi     : Protein dan serat tinggi\n");
             break;
         case 2:
             printf("Program Penambahan Berat Badan:\n");
-            printf("✓ Target surplus    : 500 kalori/hari\n");
-            printf("✓ Potensi kenaikan  : 0.5-1 kg/minggu\n");
-            printf("✓ Fokus nutrisi     : Protein dan karbohidrat kompleks\n");
+            printf(" Target surplus    : 500 kalori/hari\n");
+            printf(" Potensi kenaikan  : 0.5-1 kg/minggu\n");
+            printf(" Fokus nutrisi     : Protein dan karbohidrat kompleks\n");
             break;
         case 3:
             printf("Program Pola Hidup Sehat:\n");
-            printf("✓ Keseimbangan nutrisi\n");
-            printf("✓ Konsumsi makanan segar dan bervariasi\n");
-            printf("✓ Pola makan teratur\n");
+            printf(" Keseimbangan nutrisi\n");
+            printf(" Konsumsi makanan segar dan bervariasi\n");
+            printf(" Pola makan teratur\n");
             break;
     }
     printf("\n============================================\n");

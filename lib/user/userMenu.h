@@ -148,24 +148,28 @@ void lihatMenuMakanan() {
         }
 
         printf("\n=================== DAFTAR MENU ===================\n");
-        printf(BOLD_CYAN "+----+--------------------------------+---------------+-------------+\n");
-        printf("| ID |             Nama Menu          |    Harga     |   Kalori    |\n");
-        printf("+----+--------------------------------+---------------+-------------+\n" RESET);
+        printf(BOLD_CYAN "+----+--------------------------------+---------------+-------------+-----------+-----------+-----------+---------+\n");
+        printf("| ID |             Nama Menu          |    Harga     |   Kalori    |  Protein  |  Karbo   |   Lemak   |  Stok   |\n");
+        printf("+----+--------------------------------+---------------+-------------+-----------+-----------+-----------+---------+\n" RESET);
         
         int menuDitemukan = 0;
         for(int i = 0; i < jumlahMenu; i++) {
             if(daftarMenu[i].tersedia && 
                (opsi != 2 || strstr(strlwr(daftarMenu[i].nama), strlwr(cariNama)) != NULL)) {
                 
-                printf(WHITE "| %-2d | %-30s | Rp.%-9.2f | %-10.2f |\n",
+                printf(WHITE "| %-2d | %-30s | Rp.%-9.2f | %-10.2f | %-9.2f | %-9.2f | %-9.2f | %-7d |\n",
                     daftarMenu[i].id, 
                     daftarMenu[i].nama, 
                     daftarMenu[i].harga, 
-                    daftarMenu[i].kalori);
+                    daftarMenu[i].kalori,
+                    daftarMenu[i].protein,
+                    daftarMenu[i].karbohidrat,
+                    daftarMenu[i].lemak,
+                    daftarMenu[i].tersedia);
                 menuDitemukan = 1;
             }
         }
-        printf(BOLD_CYAN "+----+--------------------------------+---------------+-------------+\n" RESET);
+        printf(BOLD_CYAN "+----+--------------------------------+---------------+-------------+-----------+-----------+-----------+---------+\n" RESET);
 
         if(!menuDitemukan) {
             printf(BOLD_RED "\nTidak ada menu yang tersedia.\n" RESET);

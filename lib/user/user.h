@@ -45,8 +45,30 @@ int surveyPolaHidup(int isAfterRegister, float existingWeight, float existingHei
     
     printf(ITALIC "Pilih jawaban sesuai kebiasaan Anda sehari-hari.\n\n" RESET);
 
-    // Fungsi validasi input
-    
+    // Fungsi helper untuk validasi input satu karakter
+    int bacaJawaban(char *jawaban, char max_pilihan) {
+        char input[100];
+        if (fgets(input, sizeof(input), stdin)) {
+            // Hapus newline jika ada
+            input[strcspn(input, "\n")] = 0;
+            
+            // Cek panjang input
+            if (strlen(input) != 1) {
+                return 0;
+            }
+            
+            // Konversi ke uppercase
+            *jawaban = toupper(input[0]);
+            
+            // Validasi range jawaban
+            if (*jawaban < 'A' || *jawaban > max_pilihan) {
+                return 0;
+            }
+            
+            return 1;
+        }
+        return 0;
+    }
 
     // Pertanyaan 1
     printSeparator();
@@ -60,12 +82,13 @@ int surveyPolaHidup(int isAfterRegister, float existingWeight, float existingHei
     char jawaban;
     do {
         printf("Pilihan Anda (A/B/C/D): ");
-        scanf(" %c", &jawaban);
-        jawaban = toupper(jawaban);
-        if (jawaban < 'A' || jawaban > 'D') {
-            printf(RED "Input tidak valid. Harap masukkan A, B, C, atau D.\n" RESET);
+        if (!bacaJawaban(&jawaban, 'D')) {
+            printf(RED "Input tidak valid. Harap masukkan satu huruf A, B, C, atau D.\n" RESET);
+            while (getchar() != '\n'); // Clear buffer jika input lebih dari 1 karakter
+            continue;
         }
-    } while (jawaban < 'A' || jawaban > 'D');
+        break;
+    } while (1);
     
     switch (jawaban) {
         case 'A': n -= 5; break;
@@ -83,17 +106,18 @@ int surveyPolaHidup(int isAfterRegister, float existingWeight, float existingHei
     printf("| C. 1 kali seminggu           |\n");
     printf("| D. Jarang atau tidak pernah  |\n" RESET);
     printSeparator();
-    char jawaban2;
+    
     do {
         printf("Pilihan Anda (A/B/C/D): ");
-        scanf(" %c", &jawaban2);
-        jawaban2 = toupper(jawaban2);
-        if (jawaban2 < 'A' || jawaban2 > 'D') {
-            printf(RED "Input tidak valid. Harap masukkan A, B, C, atau D.\n" RESET);
+        if (!bacaJawaban(&jawaban, 'D')) {
+            printf(RED "Input tidak valid. Harap masukkan satu huruf A, B, C, atau D.\n" RESET);
+            while (getchar() != '\n');
+            continue;
         }
-    } while (jawaban2 < 'A' || jawaban2 > 'D');
+        break;
+    } while (1);
     
-    switch (jawaban2) {
+    switch (jawaban) {
         case 'A': n -= 7; break;
         case 'B': n += 10; break;
         case 'C': n += 20; break;
@@ -210,64 +234,27 @@ int surveyPolaHidup(int isAfterRegister, float existingWeight, float existingHei
     // Menentukan tingkat aktivitas berdasarkan nilai n
     int tingkatAktivitas;
     if (n < 30) {
-        tingkatAktivitas = 1; // Rendah
+        tingkatAktivitas = 1; // Sangat Jarang Olahraga
+    } else if (n < 50) {
+        tingkatAktivitas = 2; // Jarang Olahraga (1-3 hari/minggu)
     } else if (n < 70) {
-        tingkatAktivitas = 2; // Sedang
+        tingkatAktivitas = 3; // Cukup Aktif (3-5 hari/minggu)
+    } else if (n < 90) {
+        tingkatAktivitas = 4; // Sangat Aktif (6-7 hari/minggu)
     } else {
-        tingkatAktivitas = 3; // Tinggi
+        tingkatAktivitas = 5; // Ekstra Aktif (Atlet)
     }
 
-    // Menentukan tujuan program berdasarkan BMI dan tingkat aktivitas
+    // Menentukan tujuan program berdasarkan BMI
     float bmi = beratBaru / ((tinggiBaru/100) * (tinggiBaru/100));
     int tujuanProgram;
     
     if (bmi < 18.5) {
-        tujuanProgram = 1; // Program penambahan berat badan
+        tujuanProgram = 3; // Program penambahan massa otot
     } else if (bmi >= 25) {
-        tujuanProgram = 2; // Program penurunan berat badan
+        tujuanProgram = 1; // Program penurunan berat badan
     } else {
-        tujuanProgram = 3; // Program maintenance
-    }
-
-    // Menampilkan hasil
-    printf("\n");
-    printf(BOLD_CYAN "====================================\n");
-    printf("           Hasil Survei\n");
-    printf("====================================\n" RESET);
-    
-    printf(ITALIC "Total poin Anda dihitung berdasarkan kebiasaan harian Anda.\n" RESET);
-
-    if (n < 30) {
-        printf(BOLD_RED "\nKategori: Kurang Sehat\n" RESET);
-        printf(RED "Saran: Perbaiki pola makan, tambahkan olahraga, dan hindari kebiasaan tidak sehat.\n" RESET);
-    } else if (n < 70) {
-        printf(BOLD_YELLOW "\nKategori: Sehat\n" RESET);
-        printf(YELLOW "Saran: Lanjutkan kebiasaan baik Anda, tetapi tetap perhatikan keseimbangan hidup.\n" RESET);
-    } else {
-        printf(BOLD_GREEN "\nKategori: Sangat Sehat\n" RESET);
-        printf(GREEN "Saran: Pertahankan gaya hidup sehat Anda dan jadilah inspirasi bagi orang lain.\n" RESET);
-    }
-
-    // Pesan pengingat untuk berhenti merokok
-    if (merokok == 1) {
-        printf(BOLD_RED "\nPesan Penting: " RESET);
-        printf(RED "Merokok merusak kesehatan. Pertimbangkan untuk berhenti demi hidup yang lebih sehat.\n" RESET);
-    }
-
-    printf("\nBerdasarkan hasil survei:\n");
-    printf(BOLD "Tingkat Aktivitas: " RESET);
-    switch(tingkatAktivitas) {
-        case 1: printf(RED "Rendah\n" RESET); break;
-        case 2: printf(YELLOW "Sedang\n" RESET); break;
-        case 3: printf(GREEN "Tinggi\n" RESET); break;
-    }
-
-    printf(BOLD "BMI Anda: %.1f\n" RESET, bmi);
-    printf(BOLD "Program yang Disarankan: " RESET);
-    switch(tujuanProgram) {
-        case 1: printf(CYAN "Program Penambahan Berat Badan\n" RESET); break;
-        case 2: printf(CYAN "Program Penurunan Berat Badan\n" RESET); break;
-        case 3: printf(CYAN "Program Maintenance\n" RESET); break;
+        tujuanProgram = 2; // Program pola makan sehat
     }
 
     // Update data pelanggan
@@ -275,17 +262,52 @@ int surveyPolaHidup(int isAfterRegister, float existingWeight, float existingHei
     struct Pelanggan* daftarPelanggan = bacaPelangganDariCSV(&jumlahPelanggan);
     for(int i = 0; i < jumlahPelanggan; i++) {
         if(strcmp(daftarPelanggan[i].username, username) == 0) {
+            // Update semua data terkait
             daftarPelanggan[i].beratBadan = beratBaru;
             daftarPelanggan[i].tinggiBadan = tinggiBaru;
             daftarPelanggan[i].tingkatAktivitas = tingkatAktivitas;
             daftarPelanggan[i].tujuanProgram = tujuanProgram;
+            daftarPelanggan[i].nilaiPolaHidup = n;
             break;
         }
     }
     tulisPelangganKeCSV(daftarPelanggan, jumlahPelanggan);
     free(daftarPelanggan);
 
-    printf(BOLD_CYAN "====================================\n" RESET);
+    // Tampilkan hasil
+    printf("\n%s=== Hasil Survei ===%s\n", BOLD_CYAN, RESET);
+    printf("\nTingkat Aktivitas: ");
+    switch(tingkatAktivitas) {
+        case 1: printf(RED "Sangat Jarang Olahraga\n" RESET); break;
+        case 2: printf(YELLOW "Jarang Olahraga (1-3 hari/minggu)\n" RESET); break;
+        case 3: printf(GREEN "Cukup Aktif (3-5 hari/minggu)\n" RESET); break;
+        case 4: printf(BOLD_GREEN "Sangat Aktif (6-7 hari/minggu)\n" RESET); break;
+        case 5: printf(BOLD_CYAN "Ekstra Aktif (Atlet)\n" RESET); break;
+    }
+
+    printf("\nBMI: %.1f - ", bmi);
+    if (bmi < 18.5) printf(YELLOW "Berat Badan Kurang\n" RESET);
+    else if (bmi < 25) printf(GREEN "Berat Badan Normal\n" RESET);
+    else if (bmi < 30) printf(YELLOW "Berat Badan Berlebih\n" RESET);
+    else printf(RED "Obesitas\n" RESET);
+
+    printf("\nProgram yang Direkomendasikan: ");
+    switch(tujuanProgram) {
+        case 1: printf(CYAN "Program Penurunan Berat Badan\n" RESET); break;
+        case 2: printf(CYAN "Program Pola Makan Sehat\n" RESET); break;
+        case 3: printf(CYAN "Program Penambahan Massa Otot\n" RESET); break;
+    }
+
+    // Tambahkan peringatan merokok
+    if (merokok) {
+        printf("\nPeringatan Kesehatan: ");
+        printf(BOLD_RED "Anda teridentifikasi sebagai perokok!\n" RESET);
+        printf(YELLOW "Merokok dapat menyebabkan:\n" RESET);
+        printf("- Kanker paru-paru dan berbagai jenis kanker lainnya\n");
+        printf("- Penyakit jantung dan pembuluh darah\n");
+        printf("- Gangguan pernapasan kronis\n");
+        printf(GREEN "Pertimbangkan untuk berhenti merokok demi kesehatan Anda.\n" RESET);
+    }
 
     return n;
 }
@@ -458,25 +480,32 @@ int registerPelanggan(void) {
     
     // Input dan validasi nomor telepon
     do {
+        char tempTelepon[100]; // buffer sementara yang lebih besar
         printf("Nomor Telepon (10-15 digit): ");
-        scanf("%14s", pelangganBaru.telepon);
+        scanf("%99s", tempTelepon); // baca ke buffer sementara
         
-        if(strlen(pelangganBaru.telepon) < 10 || strlen(pelangganBaru.telepon) > 15) {
-            printf("Panjang nomor telepon tidak valid!\n");
+        // Cek panjang input
+        if(strlen(tempTelepon) < 10 || strlen(tempTelepon) > 15) {
+            printf(RED "Panjang nomor telepon tidak valid!\n" RESET);
             continue;
         }
         
+        // Validasi karakter
         int valid = 1;
-        for(int i = 0; pelangganBaru.telepon[i]; i++) {
-            if(!isdigit(pelangganBaru.telepon[i])) {
+        for(int i = 0; tempTelepon[i]; i++) {
+            if(!isdigit(tempTelepon[i])) {
                 valid = 0;
                 break;
             }
         }
         if(!valid) {
-            printf("Nomor telepon hanya boleh berisi angka!\n");
+            printf(RED "Nomor telepon hanya boleh berisi angka!\n" RESET);
             continue;
         }
+
+        // Jika semua validasi berhasil, salin ke struct
+        strncpy(pelangganBaru.telepon, tempTelepon, 15);
+        pelangganBaru.telepon[15] = '\0'; // pastikan null-terminated
         break;
     } while(1);
     
@@ -513,13 +542,13 @@ int registerPelanggan(void) {
     } while(1);
     
     do {
-        printf("Jenis Kelamin (P/W): ");
+        printf("Jenis Kelamin (L/P): ");
         while(getchar() != '\n');
         scanf("%c", &pelangganBaru.jenisKelamin);
         
         pelangganBaru.jenisKelamin = toupper(pelangganBaru.jenisKelamin);
-        if(pelangganBaru.jenisKelamin != 'P' && pelangganBaru.jenisKelamin != 'W') {
-            printf("Pilih P untuk Pria atau W untuk Wanita!\n");
+        if(pelangganBaru.jenisKelamin != 'L' && pelangganBaru.jenisKelamin != 'P') {
+            printf("Pilih L untuk Laki-laki atau P untuk Perempuan!\n");
             continue;
         }
         break;

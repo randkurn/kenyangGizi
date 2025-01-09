@@ -14,7 +14,7 @@ ID;Nama Menu;Harga;Kategori;Tersedia;Protein (g);Karbohidrat (g);Lemak (g)
 13;Salad Buah;19000.00;Sehat;1;5.00;20.00;2.00
 14;Bubur Oatmeal dengan Pisang;10000.00;Sehat;1;6.00;35.00;2.00
 15;Smootie Pisang Selai Kacang;17000.00;Bulking;1;15.00;40.00;18.00
-16;Salmon Salad Alpukat;44000.00;Cutting;1;35.00;22.00;10.00
+16;Salmon Salad Alpukat;44000.00;Diet;1;35.00;22.00;10.00
 17;Steak Alpukat Quinoa;30000.00;Bulking;1;40.00;35.00;25.00
 19;Ayam Butter Cream;35000.00;Bulking;1;35.00;40.00;20.00
 20;Omlet Tuna Keju;40000.00;Bulking;1;30.00;5.00;15.00
@@ -28,7 +28,7 @@ ID;Nama Menu;Harga;Kategori;Tersedia;Protein (g);Karbohidrat (g);Lemak (g)
 28;Surf & Turf Ayam dan Udang;60000.00;bulking;1;81.00;35.00;10.00
 29;Salmon Avocado Delight;45000.00;Diet;1;45.00;12.00;28.00
 30;Salmon with Lemon Butter Sauce;45000.00;Sehat;1;45.00;25.00;17.50
-31;Dakgalbi (Ayam Pedas Tumis Sayur);50000.00;Bulking;1;55.00;38.00;10.00
+31;Dakgalbi ;50000.00;Bulking;1;55.00;38.00;10.00
 32;salad ayam panggang;30000.00;diet;1;28.00;7.00;6.00
 33;nasi merah tumis tempe;25000.00;bulking;1;22.00;23.00;7.00
 34;ubi kukus ikan panggang;30000.00;bulking;1;30.00;20.00;5.00

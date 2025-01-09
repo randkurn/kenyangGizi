@@ -161,34 +161,44 @@ void hapusDataPelanggan(void) {
     int jumlahPelanggan;
     struct Pelanggan* daftarPelanggan = bacaPelangganDariCSV(&jumlahPelanggan);
     char username[MAX_USERNAME];
-    char kembali;
+    char konfirmasi;
     int ditemukan;
     
     if (daftarPelanggan == NULL) {
+        printf("\n%sError: Gagal membaca data pelanggan!%s\n", BOLD_RED, RESET);
         return;
     }
 
     do {
-        lihatDataPelanggan();
+        system("cls"); // Bersihkan layar
+        tampilkanDataPelanggan(daftarPelanggan, jumlahPelanggan);
         ditemukan = 0;
         
-        printf("\n%sMasukkan username pelanggan yang akan dihapus:%s ", BOLD_WHITE, RESET);
+        printf("\n%sMasukkan username pelanggan yang akan dihapus (0 untuk batal):%s ", BOLD_WHITE, RESET);
         scanf("%s", username);
         
-        // Validasi input username
-        if (strlen(username) == 0) {
-            printf("\nError: Username tidak boleh kosong!\n");
+        if (strcmp(username, "0") == 0) {
+            free(daftarPelanggan);
+            return;
+        }
+        
+        // Konfirmasi penghapusan
+        printf("\n%sAnda yakin ingin menghapus user '%s'? (Y/N):%s ", BOLD_YELLOW, username, RESET);
+        scanf(" %c", &konfirmasi);
+        
+        if (toupper(konfirmasi) != 'Y') {
+            printf("\n%sPenghapusan dibatalkan.%s\n", BOLD_YELLOW, RESET);
             continue;
         }
         
         struct Pelanggan* tempPelanggan = malloc(MAX_MENU_ITEMS * sizeof(struct Pelanggan));
         if (tempPelanggan == NULL) {
-            printf("\nError: Gagal mengalokasi memori!\n");
+            printf("\n%sError: Gagal mengalokasi memori!%s\n", BOLD_RED, RESET);
+            free(daftarPelanggan);
             return;
         }
         
         int newCount = 0;
-        
         for(int i = 0; i < jumlahPelanggan; i++) {
             if(strcmp(daftarPelanggan[i].username, username) != 0) {
                 tempPelanggan[newCount++] = daftarPelanggan[i];
@@ -196,20 +206,20 @@ void hapusDataPelanggan(void) {
                 ditemukan = 1;
             }
         }
-                if(ditemukan) {
-            // Update file CSV dengan data baru
+
+        if(ditemukan) {
             tulisPelangganKeCSV(tempPelanggan, newCount);
             printf("\n%sData pelanggan berhasil dihapus!%s\n", BOLD_GREEN, RESET);
         } else {
-            printf("\n%sPelanggan dengan username %s tidak ditemukan!%s\n", BOLD_RED, username, RESET);
+            printf("\n%sPelanggan dengan username '%s' tidak ditemukan!%s\n", BOLD_RED, username, RESET);
         }
         
         free(tempPelanggan);
         
         printf("\nHapus data pelanggan lain? (Y/N): ");
-        scanf(" %c", &kembali);
+        scanf(" %c", &konfirmasi);
         
-    } while(toupper(kembali) == 'Y');
+    } while(toupper(konfirmasi) == 'Y');
     
     free(daftarPelanggan);
 }
@@ -218,84 +228,91 @@ void editDataPelanggan() {
     int jumlahPelanggan;
     struct Pelanggan* daftarPelanggan = bacaPelangganDariCSV(&jumlahPelanggan);
     char username[MAX_USERNAME];
-    char lanjut;
+    char konfirmasi;
     
     if (daftarPelanggan == NULL) {
+        printf("\n%sError: Gagal membaca data pelanggan!%s\n", BOLD_RED, RESET);
         return;
     }
     
     do {
-        lihatDataPelanggan();
+        system("cls"); // Bersihkan layar
+        tampilkanDataPelanggan(daftarPelanggan, jumlahPelanggan);
         
-        printf("\n%sMasukkan username pelanggan yang akan diedit:%s ", BOLD_WHITE, RESET);
+        printf("\n%sMasukkan username pelanggan yang akan diedit (0 untuk batal):%s ", BOLD_WHITE, RESET);
         scanf("%s", username);
         
-        // Validasi input username
-        if (strlen(username) == 0) {
-            printf("\nError: Username tidak boleh kosong!\n");
-            continue;
+        if (strcmp(username, "0") == 0) {
+            free(daftarPelanggan);
+            return;
         }
         
         int found = 0;
         for(int i = 0; i < jumlahPelanggan; i++) {
             if(strcmp(daftarPelanggan[i].username, username) == 0) {
                 printf("\n%sData Pelanggan ditemukan!%s\n", BOLD_GREEN, RESET);
-                printf("%sUsername saat ini: %s%s\n", BOLD_WHITE, RESET, daftarPelanggan[i].username);
-                printf("%sNama saat ini: %s%s\n", BOLD_WHITE, RESET, daftarPelanggan[i].nama);
-                printf("%sTelepon saat ini: %s%s\n", BOLD_WHITE, RESET, daftarPelanggan[i].telepon);
-                printf("%sBerat Badan saat ini: %.1f\n", daftarPelanggan[i].beratBadan);
-                printf("%sTinggi Badan saat ini: %.1f\n", daftarPelanggan[i].tinggiBadan);
-                printf("%sUsia saat ini: %d\n", daftarPelanggan[i].usia);
-                printf("%sJenis Kelamin saat ini: %c\n", daftarPelanggan[i].jenisKelamin);
+                printf("\n%s=== Data Saat Ini ===%s\n", BOLD_CYAN, RESET);
+                printf("%-20s: %s\n", "Username", daftarPelanggan[i].username);
+                printf("%-20s: %s\n", "Nama", daftarPelanggan[i].nama);
+                printf("%-20s: %s\n", "Telepon", daftarPelanggan[i].telepon);
+                printf("%-20s: %.1f kg\n", "Berat Badan", daftarPelanggan[i].beratBadan);
+                printf("%-20s: %.1f cm\n", "Tinggi Badan", daftarPelanggan[i].tinggiBadan);
+                printf("%-20s: %d tahun\n", "Usia", daftarPelanggan[i].usia);
+                printf("%-20s: %c\n", "Jenis Kelamin", daftarPelanggan[i].jenisKelamin);
                 
-                printf("\n%s=== Masukkan data baru ===%s\n", BOLD_CYAN, RESET);
+                printf("\n%sEdit data ini? (Y/N):%s ", BOLD_YELLOW, RESET);
+                scanf(" %c", &konfirmasi);
+                
+                if (toupper(konfirmasi) != 'Y') {
+                    printf("\n%sEdit dibatalkan.%s\n", BOLD_YELLOW, RESET);
+                    break;
+                }
+                
+                printf("\n%s=== Masukkan Data Baru ===%s\n", BOLD_CYAN, RESET);
+                
                 printf("Nama: ");
                 scanf(" %[^\n]s", daftarPelanggan[i].nama);
                 
                 printf("Telepon: ");
                 scanf("%s", daftarPelanggan[i].telepon);
                 
-                printf("Berat Badan (kg): ");
-                scanf("%f", &daftarPelanggan[i].beratBadan);
+                do {
+                    printf("Berat Badan (kg): ");
+                    scanf("%f", &daftarPelanggan[i].beratBadan);
+                } while(daftarPelanggan[i].beratBadan <= 0);
                 
-                printf("Tinggi Badan (cm): ");
-                scanf("%f", &daftarPelanggan[i].tinggiBadan);
+                do {
+                    printf("Tinggi Badan (cm): ");
+                    scanf("%f", &daftarPelanggan[i].tinggiBadan);
+                } while(daftarPelanggan[i].tinggiBadan <= 0);
                 
-                printf("Usia: ");
-                scanf("%d", &daftarPelanggan[i].usia);
+                do {
+                    printf("Usia: ");
+                    scanf("%d", &daftarPelanggan[i].usia);
+                } while(daftarPelanggan[i].usia <= 0);
                 
-                // Validasi input data baru
                 do {
                     printf("Jenis Kelamin (L/P): ");
                     scanf(" %c", &daftarPelanggan[i].jenisKelamin);
                     daftarPelanggan[i].jenisKelamin = toupper(daftarPelanggan[i].jenisKelamin);
                 } while(daftarPelanggan[i].jenisKelamin != 'L' && daftarPelanggan[i].jenisKelamin != 'P');
                 
-                do {
-                    printf("Tingkat Aktivitas (1: Ringan, 2: Sedang, 3: Berat): ");
-                    scanf("%d", &daftarPelanggan[i].tingkatAktivitas);
-                } while(daftarPelanggan[i].tingkatAktivitas < 1 || daftarPelanggan[i].tingkatAktivitas > 3);
-                
-                do {
-                    printf("Tujuan Program (1: Turun BB, 2: Naik BB, 3: Hidup Sehat): ");
-                    scanf("%d", &daftarPelanggan[i].tujuanProgram);
-                } while(daftarPelanggan[i].tujuanProgram < 1 || daftarPelanggan[i].tujuanProgram > 3);
-                
                 tulisPelangganKeCSV(daftarPelanggan, jumlahPelanggan);
                 printf("\n%sData pelanggan berhasil diupdate!%s\n", BOLD_GREEN, RESET);
+                
                 found = 1;
                 break;
             }
         }
         
         if(!found) {
-            printf("\n%sPelanggan dengan username %s tidak ditemukan!%s\n", BOLD_RED, username, RESET);
+            printf("\n%sPelanggan dengan username '%s' tidak ditemukan!%s\n", BOLD_RED, username, RESET);
         }
         
         printf("\nEdit data pelanggan lain? (Y/N): ");
-        scanf(" %c", &lanjut);
+        scanf(" %c", &konfirmasi);
         
-    } while(toupper(lanjut) == 'Y');
+    } while(toupper(konfirmasi) == 'Y');
     
     free(daftarPelanggan);
 }

@@ -95,6 +95,7 @@ void tulisPelangganKeCSV(struct Pelanggan* daftarPelanggan, int jumlahPelanggan)
 void lihatProfilPelanggan(const char* username) {
     int jumlahPelanggan;
     struct Pelanggan* daftarPelanggan = bacaPelangganDariCSV(&jumlahPelanggan);
+    char buffer[256];
     
     if (daftarPelanggan == NULL) {
         printf(COLOR_RESET(BOLD_RED) "\nError: Tidak dapat membaca data pelanggan!\n" RESET);
@@ -117,7 +118,8 @@ void lihatProfilPelanggan(const char* username) {
             printf("Berat Badan  : %.2f kg\n", daftarPelanggan[i].beratBadan);
             printf("Tinggi Badan : %.2f cm\n", daftarPelanggan[i].tinggiBadan);
             printf("Usia         : %d\n", daftarPelanggan[i].usia);
-            printf("Jenis Kelamin: %c\n", daftarPelanggan[i].jenisKelamin);
+            printf("Jenis Kelamin: %s\n", 
+                   daftarPelanggan[i].jenisKelamin == 'L' ? "Laki-laki" : "Perempuan");
             
             // Informasi Program
             printf("\n----- INFORMASI PROGRAM -----\n");
@@ -155,6 +157,10 @@ void lihatProfilPelanggan(const char* username) {
     
     if(!found) {
         printf(COLOR_RESET(BOLD_RED) "\nError: Data pelanggan tidak ditemukan!\n" RESET);
+        // Bersihkan buffer input
+        while ((getchar()) != '\n');
+        printf("\nTekan Enter untuk kembali...");
+        fgets(buffer, sizeof(buffer), stdin);
     }
     
     free(daftarPelanggan);
